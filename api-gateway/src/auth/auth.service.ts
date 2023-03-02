@@ -20,11 +20,9 @@ export class AuthService implements OnModuleInit {
         )
         .subscribe({
           next: (response) => {
-            console.log(response);
             resolve(response);
           },
           error: (error) => {
-            console.error(error);
             reject(error);
           },
         });
@@ -49,4 +47,5 @@ export class AuthService implements OnModuleInit {
     await this.client.connect();
     Logger.log('Auth module connected to Kafka');
   }
+
 }

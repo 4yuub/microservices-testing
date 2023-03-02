@@ -1,19 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, OnApplicationShutdown } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
 
 @Controller()
-export class AppController {
+export class AppController  {
   constructor(private readonly appService: AppService) {}
-
   @MessagePattern('auth')
   test(data: any) {
     // console.log(data.login);
     let array_of_numbers = data
 
-    let sum = array_of_numbers.reduce(function(a : number, b  : number){
-        return a + b;
-    }, 0);
+    let sum : number = 0;
+    for (let i = 0; i < array_of_numbers.length; i++) {
+      sum += array_of_numbers[i];
+    }
     // console.log(user);
     // return user;
     return sum;
