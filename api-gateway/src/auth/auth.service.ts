@@ -44,8 +44,7 @@ export class AuthService implements OnModuleInit {
 
   async onModuleInit() {
     this.client.subscribeToResponseOf('auth');
-    await this.client.connect();
-    Logger.log('Auth module connected to Kafka');
+    this.client.connect();
   }
 
 }

@@ -10,7 +10,7 @@ async function bootstrap() {
         brokers: ['0.0.0.0:29092'],
     },
       consumer: {
-          groupId: 'api-gateway',
+          groupId: 'auth-gateway',
         },
     }});
   await app.listen();

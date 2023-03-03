@@ -9,6 +9,9 @@ async function bootstrap() {
       client: {
         brokers: ['0.0.0.0:29092'],
     },
+    consumer: {
+      groupId: 'users-gateway',
+    },
     }});
   await app.listen();
 }
