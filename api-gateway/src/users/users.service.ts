@@ -7,12 +7,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService implements OnModuleInit {
   constructor(@Inject('USERS_MICROSERVICE') private client: ClientKafka) {}
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return new Promise((resolve, reject) => {
+      this.client.send('createUser', createUserDto).subscribe({
+        next: (response) => {
+          resolve(response);
+        },
+        error: (error) => {
+          reject(error);
+        },
+      });
+    });
   }
 
   findAll() {
     return new Promise((resolve, reject) => {
-      this.client.send('users', [1, 2, 3, 4, 5, 6, 7, 8, 10]).subscribe({
+      this.client.send('findAllUsers', {}).subscribe({
         next: (response) => {
           resolve(response);
         },
@@ -36,7 +45,8 @@ export class UsersService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.client.subscribeToResponseOf('users');
+    this.client.subscribeToResponseOf('findAllUsers');
+    this.client.subscribeToResponseOf('createUser');
     this.client.connect();
   }
 }
