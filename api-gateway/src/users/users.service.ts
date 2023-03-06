@@ -6,6 +6,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService implements OnModuleInit {
   constructor(@Inject('USERS_MICROSERVICE') private client: ClientKafka) {}
+  
+  
   create(createUserDto: CreateUserDto) {
     return new Promise((resolve, reject) => {
       this.client.send('createUser', createUserDto).subscribe({

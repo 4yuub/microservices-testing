@@ -17,7 +17,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           },
           consumer: {
             groupId: 'auth-gateway',
-        },
+        }
       },
     },
   ],
