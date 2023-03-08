@@ -9,6 +9,12 @@ import { get } from 'http';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('login')
+  @UseGuards(AuthGuard('local'))
+  async login(@Req() req) {
+    return {"authenticated": true};
+  }
+
   @Post()
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);

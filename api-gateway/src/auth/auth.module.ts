@@ -3,10 +3,13 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GoogleStrategy } from './google.strategy';
+import { LocalStrategy } from './local.strategy';
+import { UsersService } from 'src/users/users.service';
+import { UsersModule } from 'src/users/users.module';
 
 
 @Module({
-  imports: [
+  imports: [UsersModule,
     ClientsModule.register([
       {
         name: 'AUTH_MICROSERVICE',
@@ -20,10 +23,10 @@ import { GoogleStrategy } from './google.strategy';
             groupId: 'auth-gateway',
         }
       },
-    },
+    }
   ],
   )],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy]
+  providers: [AuthService, GoogleStrategy, LocalStrategy]
 })
 export class AuthModule {}

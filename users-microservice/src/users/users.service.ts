@@ -8,6 +8,16 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+  async validateUser(username: string, password: string) {
+    const user = await this.usersRepository.findOne({
+        where: {username}
+    });
+    if (!user || user.password !== password) {
+      return null;
+    }
+    return user;
+  }
+  
   async create(createUserDto: CreateUserDto) {
     try
     {

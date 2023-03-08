@@ -13,6 +13,11 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @MessagePattern('validateUser')
+  async validateUser(@Payload() validateUserDto: {username: string, password: string}) {
+    return await this.usersService.validateUser(validateUserDto.username, validateUserDto.password);
+  }
+
   @MessagePattern('findAllUsers')
   async findAll() {
     return await this.usersService.findAll();

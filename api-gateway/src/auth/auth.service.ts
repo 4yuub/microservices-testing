@@ -2,10 +2,27 @@ import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ClientKafka } from '@nestjs/microservices';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  constructor(@Inject('AUTH_MICROSERVICE') private client: ClientKafka) {}
+  constructor(@Inject('AUTH_MICROSERVICE') private client: ClientKafka,
+    private usersService: UsersService) {}
+  
+  validateUser(username: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.usersService.client.send('validateUser', { username, password })
+        .subscribe({
+          next: (response) => {
+            resolve(response);
+          },
+          error: (error) => {
+            reject(error);
+          },
+        })
+    });
+  }
+
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
@@ -44,7 +61,7 @@ export class AuthService implements OnModuleInit {
 
   async onModuleInit() {
     this.client.subscribeToResponseOf('auth');
-    this.client.connect();
+    await this.client.connect();
   }
 
   googleLogin(req) {
